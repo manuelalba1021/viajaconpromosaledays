@@ -1,5 +1,5 @@
 <?php
-define('TELEGRAM_BOT_TOKEN', '7881440537:AAHbsg5rssYHnSIylGdW5Wy_2MbjOeazltA');
+define('TELEGRAM_BOT_TOKEN', '7978973213:AAGZ5tkPk98atTrFAYHtoI2Mb-wqIlQPTWM');
 define('TELEGRAM_CHAT_ID', '-4884883709');
 
 // Registrar solicitud en logs para depuración
