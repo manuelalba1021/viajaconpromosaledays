@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pago con PSE</title>
+  <style>
+    /* Fuentes y fondo */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #e0eaff, #f4f7fa);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #1a1a1a;
+    }
+
+    /* Loader */
+    #loader {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: inset 0 0 100px #bbd1ff44;
+    }
+    #loader p {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: #0033a0;
+      margin-top: 16px;
+      letter-spacing: 0.05em;
+      animation: pulseText 2s infinite;
+    }
+
+    /* Pulsación texto */
+    @keyframes pulseText {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .spinner {
+      width: 220px;
+      height: 220px;
+      perspective: 1000px;
+      margin-bottom: 24px;
+    }
+
+.logo-3d {
+  width: 100%;
+  height: 100%;
+  animation: spinY 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-style: preserve-3d;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.logo-3d img {
+  width: 80%;
+  height: auto;
+  backface-visibility: hidden;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px #0033a0cc);
+}
+
+    @keyframes spinY {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+
+    /* Contenido principal */
+    #main-content {
+      display: none;
+      max-width: 360px;
+      width: 90vw;
+      background: #fff;
+      padding: 36px 32px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgb(0 51 160 / 0.2);
+      text-align: center;
+      animation: fadeInUp 0.8s ease forwards;
+      color: #1a1a1a;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #0033a0;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 1.9rem;
+      letter-spacing: 0.03em;
+    }
+    p {
+      font-size: 1.05rem;
+      color: #555;
+      margin-bottom: 28px;
+      line-height: 1.4;
+    }
+
+    #qr {
+      display: inline-block;
+      border: 5px solid #0033a0;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgb(0 51 160 / 0.15);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+    #qr:hover {
+      box-shadow: 0 15px 40px rgb(0 51 160 / 0.3);
+    }
+
+    #qr img {
+      width: 280px;
+      height: 280px;
+      display: block;
+    }
+
+    #timer {
+      margin-top: 28px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #d32f2f;
+      letter-spacing: 0.05em;
+      animation: pulseTimer 1.5s infinite ease-in-out;
+      user-select: none;
+    }
+
+    /* Animación pulsante timer */
+    @keyframes pulseTimer {
+      0%, 100% { color: #d32f2f; text-shadow: none; }
+      50% { color: #ff6659; text-shadow: 0 0 8px #ff6659aa; }
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      #qr img {
+        width: 90vw;
+        height: 90vw;
+      }
+      #main-content {
+        padding: 24px 16px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      #timer {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader" aria-live="polite" aria-label="Cargando plataforma de pagos">
+    <div class="spinner" role="img" aria-hidden="true">
+      <div class="logo-3d">
+        <img src="img/pse.png" alt="Logo PSE">
+      </div>
+    </div>
+    <p>Cargando plataforma de pagos...</p>
+  </div>
+
+  <div id="main-content" role="main" aria-hidden="true">
+    <h1>Completa tu pago con PSE</h1>
+    <p>Escanea el siguiente código QR con tu app bancaria:</p>
+    <div id="qr">
+      <img id="qr-img" alt="Código QR de pago" src="">
+    </div>
+    <div id="timer" aria-live="polite" aria-atomic="true">Tiempo restante: 05:00</div>
+  </div>
+
+  <script>
+    // Simulación de carga
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        loader.style.transition = 'opacity 0.5s ease';
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          const main = document.getElementById('main-content');
+          main.style.display = 'block';
+          main.setAttribute('aria-hidden', 'false');
+        }, 500);
+      }, 4500); // duración aumentada a 4.5 segundos
+    });
+
+    // Cargar imagen QR
+    document.getElementById('qr-img').src = `qrcol.png`;
+
+    // Temporizador de 5 minutos
+    let tiempo = 5 * 60;
+    const timerEl = document.getElementById('timer');
+    const interval = setInterval(() => {
+      const m = String(Math.floor(tiempo / 60)).padStart(2,'0');
+      const s = String(tiempo % 60).padStart(2,'0');
+      timerEl.textContent = `Tiempo restante: ${m}:${s}`;
+      if (tiempo-- <= 0) {
+        clearInterval(interval);
+        timerEl.textContent = "El tiempo para el pago ha expirado.";
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
