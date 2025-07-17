@@ -19,10 +19,13 @@
 }
 
 .slide img {
-    width: 100%; /* Asegura que las imágenes se escalen correctamente */
+    width: auto;       /* Para que no se escale al 100% del contenedor */
+    max-width: 340px;  /* Tamaño máximo de la imagen */
     height: auto;
     display: block;
+    margin: 0 auto;    /* Centra la imagen horizontalmente */
 }
+
 
 
 
